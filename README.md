@@ -18,8 +18,10 @@ Há várias dependências usadas no projeto, para obter detalhes das bibliotecas
 - Spring Boot Web
 - Spring Test
 - Spring Data JPA
+- Spring Validation
 - MySQL Conector
 - Lombok
+- Swagger Spring Fox
 
 ## Developers
 
