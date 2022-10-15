@@ -22,6 +22,7 @@ Há várias dependências usadas no projeto, para obter detalhes das bibliotecas
 - MySQL Conector
 - Lombok
 - Swagger Spring Fox
+- MapStruct
 
 ## Developers
 
