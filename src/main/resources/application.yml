@@ -1,15 +1,19 @@
-# porta execuÁ„o da API
+# porta execu√ß√£o da API
 server:
   port: 8080
 
 spring:
-  # conex„o datasource
+  # swagger 3.0
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  # conex√£o datasource
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/miniautorizador?useSSL=false
     username: root
     password:
-  # metadados persistencia e visualizaÁ„o data base
+  # metadados persistencia e visualiza√ß√£o datasource
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: false
