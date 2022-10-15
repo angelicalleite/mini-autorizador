@@ -1,0 +1,20 @@
+# porta execução da API
+server:
+  port: 8080
+
+spring:
+  # conexão datasource
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/miniautorizador?useSSL=false
+    username: root
+    password:
+  # metadados persistencia e visualização data base
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: false
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
