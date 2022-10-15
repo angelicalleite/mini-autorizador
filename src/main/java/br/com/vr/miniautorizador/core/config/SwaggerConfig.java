@@ -27,12 +27,8 @@ public class SwaggerConfig {
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
                 .title("Mini Autorizador")
-                .description("API para autorização de transações.")
+                .description("API para autorização, verificações e análises de transações de Vale Refeição e Vale Alimentação, entre outras.")
                 .version("V1")
-                .contact(new Contact("Angelica Leite", "", "angelicalleite@gmail.com"))
-                .license("Licença da API")
-                .licenseUrl("Licença da API URL")
-                .termsOfServiceUrl("Termos de serviço")
                 .build();
     }
 
