@@ -31,7 +31,7 @@ public class CartaoService implements Serializable {
         return existCartao ? Optional.empty() : Optional.of(repository.save(cartao));
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Cartao updateSaldoCartao(String numeroCartao, BigDecimal valorTransacao) {
         Optional<Cartao> cartao = getCartaoByNumero(numeroCartao);
         cartao.ifPresent(e -> e.setSaldo(e.getSaldo().subtract(valorTransacao)));

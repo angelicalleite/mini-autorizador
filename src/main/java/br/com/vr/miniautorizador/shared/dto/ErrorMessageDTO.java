@@ -1,4 +1,4 @@
-package br.com.vr.miniautorizador.core.exception;
+package br.com.vr.miniautorizador.shared.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorMessage {
+public class ErrorMessageDTO {
 
     private Integer statusCode;
     private String message;
