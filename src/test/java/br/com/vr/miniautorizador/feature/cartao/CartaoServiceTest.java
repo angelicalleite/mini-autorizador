@@ -30,7 +30,6 @@ public class CartaoServiceTest {
     @BeforeEach
     public void setup() {
         cartao = new Cartao();
-        cartao.setId(1L);
         cartao.setNumero("12345");
         cartao.setSenha("senha");
     }
@@ -38,7 +37,6 @@ public class CartaoServiceTest {
     @Test
     @DisplayName("Teste para verificar método saveCartao")
     public void whenSaveCartao_thenReturnCartao() {
-
         lenient().when(repository.findByNumero(cartao.getNumero()))
                 .thenReturn(Optional.empty());
 
