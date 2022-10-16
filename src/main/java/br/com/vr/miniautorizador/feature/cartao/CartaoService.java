@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -14,7 +15,9 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public class CartaoService {
+public class CartaoService implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final CartaoRepository repository;
 
@@ -28,10 +31,7 @@ public class CartaoService {
         return existCartao ? Optional.empty() : Optional.of(repository.save(cartao));
     }
 
-    /**
-     * Bloqueo Lost Update de maneira pessimista
-     */
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public Cartao updateSaldoCartao(String numeroCartao, BigDecimal valorTransacao) {
         Optional<Cartao> cartao = getCartaoByNumero(numeroCartao);
         cartao.ifPresent(e -> e.setSaldo(e.getSaldo().subtract(valorTransacao)));
