@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 public class CartaoServiceTest {
 
     private Cartao cartao;
@@ -45,7 +46,6 @@ public class CartaoServiceTest {
 
         Optional<Cartao> savedCartao = service.saveCartao(cartao);
 
-        assertNotNull(savedCartao);
         assertTrue(savedCartao.isPresent());
         assertEquals(new BigDecimal("500.00"), savedCartao.get().getSaldo());
     }
