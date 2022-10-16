@@ -15,10 +15,6 @@ spring:
     password:
   # metadados persistencia e visualização datasource
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: false
-    open-in-view: true
     hibernate:
       ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

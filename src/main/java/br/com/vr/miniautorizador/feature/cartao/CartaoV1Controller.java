@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class CartaoV1Controller implements CartaoV1Doc {
     private final CartaoMapper cartaoMapper;
 
     @PostMapping
-    public ResponseEntity<CartaoDTO> createdCartao(@Valid @RequestBody CartaoDTO cartaoDTO) {
+    public ResponseEntity<CartaoDTO> createCartao(@Valid @RequestBody CartaoDTO cartaoDTO) {
         Optional<Cartao> cartao = cartaoService.saveCartao(cartaoMapper.toEntity(cartaoDTO));
 
         return cartao.map(e -> ResponseEntity.status(201).body(cartaoMapper.toDTO(e)))
@@ -28,8 +29,11 @@ public class CartaoV1Controller implements CartaoV1Doc {
     }
 
     @GetMapping("/{numeroCartao}")
-    public ResponseEntity<Double> getSaldoByNumeroCartao(@PathVariable("numeroCartao") String numeroCartao) {
-        return null;
+    public ResponseEntity<BigDecimal> getSaldoByNumeroCartao(@PathVariable("numeroCartao") String numeroCartao) {
+        Optional<Cartao> cartao = cartaoService.getCartaoByNumero(numeroCartao);
+
+        return cartao.map(e -> ResponseEntity.status(200).body(e.getSaldo()))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
 }

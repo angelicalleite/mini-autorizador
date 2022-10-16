@@ -16,12 +16,13 @@ public class CartaoService {
 
     private final CartaoRepository repository;
 
+    public Optional<Cartao> getCartaoByNumero(String numeroCartao) {
+        return repository.findByNumero(numeroCartao);
+    }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<Cartao> saveCartao(Cartao cartao) {
         boolean existCartao = repository.existsByNumero(cartao.getNumero());
-
-        cartao.setSaldo(500.00); // saldo inicial
-
         return existCartao ? Optional.empty() : Optional.of(repository.save(cartao));
     }
 
