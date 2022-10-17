@@ -32,7 +32,7 @@ public class CartaoRepositoryTest {
     }
 
     @Test
-    @DisplayName("Teste para verificar inserção novo cartão tem valor de saldo default de 500")
+    @DisplayName("Verificar inserção novo cartão tem valor de saldo default de 500.00")
     public void whenSaveCartao_checkDefaultValueSaldo() {
         Cartao cartaoSaved = repository.save(cartao);
 
@@ -43,16 +43,26 @@ public class CartaoRepositoryTest {
     }
 
     @Test
-    @DisplayName("Teste verificar se cartão com número duplicado não são persistidos")
+    @DisplayName("Verificar se cartão com número duplicado não são persistidos")
     public void whenSaveCartao_checkDuplicatedNumeroThrows() {
-        Optional<Cartao> cartaoSaved = repository.findByNumero("12345");
+        Cartao cartaoSaved = repository.save(cartao);
+        Optional<Cartao> cartaoExist = repository.findByNumero("teste");
 
-        assertTrue(cartaoSaved.isPresent());
+        assertTrue(cartaoExist.isPresent());
 
         Cartao duplicatedNumero = new Cartao();
-        duplicatedNumero.setNumero(cartaoSaved.get().getNumero());
+        duplicatedNumero.setNumero(cartaoSaved.getNumero());
         duplicatedNumero.setSenha("teste2");
 
         assertThrows(DataIntegrityViolationException.class, () -> repository.save(duplicatedNumero));
+    }
+
+    @Test
+    @DisplayName("Verificar se cartão com número informado existe")
+    public void whenSaveCartao_checkNumeroExist() {
+        Cartao cartaoSaved = repository.save(cartao);
+        Optional<Cartao> cartaoExist = repository.findByNumero(cartaoSaved.getNumero());
+
+        assertTrue(cartaoExist.isPresent());
     }
 }

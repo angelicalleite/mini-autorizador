@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
@@ -36,7 +35,7 @@ public class CartaoServiceTest {
     }
 
     @Test
-    @DisplayName("Teste para verificar método saveCartao")
+    @DisplayName("Verificar criação do cartão")
     public void whenSaveCartao_thenReturnCartao() {
         lenient().when(repository.findByNumero(cartao.getNumero()))
                 .thenReturn(Optional.empty());
@@ -51,13 +50,45 @@ public class CartaoServiceTest {
     }
 
     @Test
-    @DisplayName("Teste para verificar método getCartaoByNumero")
+    @DisplayName("Verificar consulta cartão por número")
     public void whenGetCartaoByNumero_thenReturnCartao() {
-        lenient().when(repository.findByNumero("12345"))
+        lenient().when(repository.findByNumero(cartao.getNumero()))
                 .thenReturn(Optional.of(cartao));
 
         Optional<Cartao> savedCartao = service.getCartaoByNumero(cartao.getNumero());
 
         assertTrue(savedCartao.isPresent());
+    }
+
+    @Test
+    @DisplayName("Verificar saldo após trasação continua positivo")
+    public void whenUpdateSaldoCartao_theValorTrasacaoSubtract() {
+        lenient().when(repository.findByNumero(cartao.getNumero()))
+                .thenReturn(Optional.of(cartao));
+
+        when(repository.save(cartao))
+                .thenReturn(cartao);
+
+        Cartao savedUpdate = service.updateSaldoCartao(cartao.getNumero(), new BigDecimal("499.99"));
+
+        assertNotNull(savedUpdate);
+        assertTrue(savedUpdate.getSaldo().compareTo(BigDecimal.ZERO) >= 0);
+    }
+
+    @Test
+    @DisplayName("Verificar se trasação não é efetivada para valor acima do saldo")
+    public void whenUpdateSaldoCartao_theReturnCartao() {
+        lenient().when(repository.findByNumero(cartao.getNumero()))
+                .thenReturn(Optional.of(cartao));
+
+        when(repository.save(cartao))
+                .thenReturn(cartao);
+
+        Cartao savedUpdate = service.updateSaldoCartao(cartao.getNumero(), new BigDecimal("500.99"));
+
+        assertNotNull(savedUpdate);
+
+        assertTrue(savedUpdate.getSaldo().compareTo(BigDecimal.ZERO) >= 0);
+        assertEquals(new BigDecimal("500.00"), savedUpdate.getSaldo());
     }
 }

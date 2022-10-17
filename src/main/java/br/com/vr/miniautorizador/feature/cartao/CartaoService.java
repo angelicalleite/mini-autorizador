@@ -34,7 +34,8 @@ public class CartaoService implements Serializable {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Cartao updateSaldoCartao(String numeroCartao, BigDecimal valorTransacao) {
         Optional<Cartao> cartao = getCartaoByNumero(numeroCartao);
-        cartao.ifPresent(e -> e.setSaldo(e.getSaldo().subtract(valorTransacao)));
+        cartao.filter(e -> e.getSaldo().subtract(valorTransacao).compareTo(BigDecimal.ZERO) >= 0)
+                .ifPresent(e -> e.setSaldo(e.getSaldo().subtract(valorTransacao)));
 
         return cartao.map(repository::save).orElse(null);
     }
