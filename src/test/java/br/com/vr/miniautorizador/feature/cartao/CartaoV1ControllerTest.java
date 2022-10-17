@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -50,21 +48,22 @@ public class CartaoV1ControllerTest {
     }
 
     @Test
+    @DisplayName("Verificar criação do cartão")
     public void saveCartaoSuccess() throws Exception {
+        CartaoDTO dto = CartaoDTO.builder().numeroCartao(cartao.getNumero()).senha(cartao.getSenha()).build();
+
         lenient().when(cartaoService.saveCartao(any()))
                 .thenReturn(Optional.of(cartao));
 
-        when(cartaoMapper.toDTO(any())).thenReturn(any());
-
-        CartaoDTO dto = cartaoMapper.toDTO(cartao);
+        when(cartaoMapper.toEntity(any())).thenReturn(cartao);
+        when(cartaoMapper.toDTO(any())).thenReturn(dto);
 
         mock.perform(post("/cartoes")
-                        .content(new ObjectMapper().writeValueAsString(dto))
+                        .content("{\"numeroCartao\": \"teste\",\"senha\": \"teste\"}")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().json(new ObjectMapper().writeValueAsString(cartao)));
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(dto)));
     }
 
     @Test
