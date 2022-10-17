@@ -30,8 +30,8 @@ public class CartaoServiceTest {
     @BeforeEach
     public void setup() {
         cartao = new Cartao();
-        cartao.setNumero("12345");
-        cartao.setSenha("senha");
+        cartao.setNumero("teste");
+        cartao.setSenha("teste");
     }
 
     @Test
