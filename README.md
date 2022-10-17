@@ -49,7 +49,7 @@ $ ./mvnw clean install
 
 ### Docker
 
-Docker apoia na execução da base de dados MySQL para camada de persistência, toda a configuração necessaria para
+Docker apoia na execução da base de dados MySQL para camada de persistência, toda a configuração necessária para
 execução
 encontra-se no arquivo `docker-compose.yml`. Portanto, o aplicativo é hospedado em um contêiner docker que pode ser
 acessado em http://localhost/ na porta 3306.
@@ -60,7 +60,7 @@ Podemos facilmente executar o todo com apenas um único comando:
 $ docker-compose up
 ```  
 
-O Docker irá puxar as imagens MySQL e Spring Boot (se nossa máquina não tiver antes). Os serviços podem ser
+O Docker irá puxar as imagens MySQL e Spring Boot (se a nossa máquina não tiver antes). Os serviços podem ser
 em segundo plano com o comando:
 
 ```sh
@@ -76,7 +76,7 @@ $ docker-compose down --rmi all
 
 ## Execução
 
-Após construção ddo projeto e aplicação web é acessível via
+Após construção do projeto e aplicação web é acessível via
 
 http://localhost:8080
 
@@ -103,7 +103,7 @@ otimizar o projeto para trabalhar de forma eficiente, nesse caso foi utilizado e
 
 - **core** arquivos estruturantes de configurações, generics e auxiliares;
 - **feature** ajuda na organização dos arquivos por contexto negocial;
-- **shapper.** organiza arquivos relacionados a persistencia e de compartilhamento comun.
+- **shapper.** organizar arquivos relacionados a persistência e de compartilhamento comum.
 
 ## Desenvolvedora
 
