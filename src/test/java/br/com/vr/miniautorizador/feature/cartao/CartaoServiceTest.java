@@ -61,7 +61,7 @@ public class CartaoServiceTest {
     }
 
     @Test
-    @DisplayName("Verificar saldo após trasação continua positivo")
+    @DisplayName("Verificar se atualização do saldo é efetivada")
     public void whenUpdateSaldoCartao_theValorTrasacaoSubtract() {
         lenient().when(repository.findByNumero(cartao.getNumero()))
                 .thenReturn(Optional.of(cartao));
@@ -76,7 +76,7 @@ public class CartaoServiceTest {
     }
 
     @Test
-    @DisplayName("Verificar se trasação não é efetivada para valor acima do saldo")
+    @DisplayName("Verificar se atualização do saldo não é efetivada para saldo insuficiente")
     public void whenUpdateSaldoCartao_theReturnCartao() {
         lenient().when(repository.findByNumero(cartao.getNumero()))
                 .thenReturn(Optional.of(cartao));
@@ -87,7 +87,6 @@ public class CartaoServiceTest {
         Cartao savedUpdate = service.updateSaldoCartao(cartao.getNumero(), new BigDecimal("500.99"));
 
         assertNotNull(savedUpdate);
-
         assertTrue(savedUpdate.getSaldo().compareTo(BigDecimal.ZERO) >= 0);
         assertEquals(new BigDecimal("500.00"), savedUpdate.getSaldo());
     }
