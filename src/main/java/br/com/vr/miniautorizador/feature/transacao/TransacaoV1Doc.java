@@ -12,6 +12,6 @@ import org.springframework.http.ResponseEntity;
 interface TransacaoV1Doc {
 
     @ApiOperation(value = "Registrar transação", protocols = MediaType.APPLICATION_JSON_VALUE, response = TransacaoStatusEnum.class)
-    ResponseEntity<TransacaoStatusEnum> createdTransacao(@ApiParam(value = "Transação", required = true) TransacaoDTO dto);
+    ResponseEntity<String> createdTransacao(@ApiParam(value = "Transação", required = true) TransacaoDTO dto);
 
 }

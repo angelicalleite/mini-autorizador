@@ -9,8 +9,8 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class CartaoDTO {
 
     @NotBlank(message = "Número do cartão é obrigatório")

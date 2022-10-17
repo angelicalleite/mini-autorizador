@@ -52,7 +52,7 @@ public class CartaoV1ControllerTest {
 
     @Test
     @DisplayName("Verificar criação do cartão")
-    public void saveCartaoSuccess() throws Exception {
+    public void shouldReturnCreated_createdCartao() throws Exception {
         CartaoDTO dto = CartaoDTO.builder().numeroCartao(cartao.getNumero()).senha(cartao.getSenha()).build();
 
         lenient().when(cartaoService.saveCartao(any()))
@@ -71,7 +71,7 @@ public class CartaoV1ControllerTest {
 
     @Test
     @DisplayName("Verificar criação do cartão com dados nulo")
-    public void saveCartaoAttributeNullSuccess() throws Exception {
+    public void shouldBadRequest_createdCartao() throws Exception {
         CartaoDTO dto = CartaoDTO.builder().build();
 
         mock.perform(post("/cartoes")
@@ -85,7 +85,7 @@ public class CartaoV1ControllerTest {
 
     @Test
     @DisplayName("Verificar criação do cartão com entidade nula")
-    public void saveCartaoNullServerError() throws Exception {
+    public void shouldReturnNullServerError_createdCartao() throws Exception {
         mock.perform(post("/cartoes")
                         .content("")
                         .contentType(MediaType.APPLICATION_JSON)
