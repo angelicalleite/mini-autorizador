@@ -1,5 +1,6 @@
 package br.com.vr.miniautorizador.feature.transacao;
 
+import br.com.vr.miniautorizador.feature.cartao.CartaoRepository;
 import br.com.vr.miniautorizador.feature.cartao.CartaoService;
 import br.com.vr.miniautorizador.feature.transacao.dto.TransacaoDTO;
 import br.com.vr.miniautorizador.shared.enuns.TransacaoStatusEnum;
@@ -16,7 +17,9 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class TransacaoServiceTest {
@@ -30,6 +33,9 @@ public class TransacaoServiceTest {
     @Mock
     private CartaoService cartaoService;
 
+    @Mock
+    private CartaoRepository repository;
+
     @BeforeEach
     public void setup() {
         cartao = new Cartao();
@@ -37,9 +43,9 @@ public class TransacaoServiceTest {
         cartao.setNumero("teste");
 
         transacaoDTO = TransacaoDTO.builder()
-                .numeroCartao("teste")
-                .senhaCartao("teste")
-                .valor(new BigDecimal("250.55"))
+                .numeroCartao(cartao.getNumero())
+                .senhaCartao(cartao.getSenha())
+                .valor(new BigDecimal("40"))
                 .build();
     }
 
@@ -91,20 +97,5 @@ public class TransacaoServiceTest {
 
         assertEquals(TransacaoStatusEnum.SALDO_INSUFICIENTE, transacaoStatus);
     }
-
-//    @Test
-//    @DisplayName("Verificar atualização de saldo com sucesso")
-//    public void shoulReturnSaldoInsuficiente_updateTransacao() {
-//        Cartao cartaUpdate = cartao;
-//        cartao.setSaldo(new BigDecimal("100.00"));
-//
-//        lenient().when(cartaoService.updateSaldoCartao(transacaoDTO.getNumeroCartao(), transacaoDTO.getValor()))
-//                .thenReturn(cartaUpdate);
-//
-//        transacaoDTO.setValor(new BigDecimal("400.00"));
-//        TransacaoStatusEnum transacaoStatus = transacaoService.updateSaldoCartao(transacaoDTO);
-//
-//        assertEquals(TransacaoStatusEnum.OK, transacaoStatus);
-//    }
 
 }

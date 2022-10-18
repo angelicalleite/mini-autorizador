@@ -25,7 +25,7 @@ public class TransacaoService implements Serializable {
     public TransacaoStatusEnum validateTransacao(TransacaoDTO transacaoDTO) {
         Optional<Cartao> cartao = cartaoService.getCartaoByNumero(transacaoDTO.getNumeroCartao());
 
-        TransacaoStatusEnum status = this.validateCartao(cartao, transacaoDTO.getNumeroCartao());
+        TransacaoStatusEnum status = this.validateNumeroCartao(cartao, transacaoDTO.getNumeroCartao());
         status = status != null ? status : this.validateSenha(cartao, transacaoDTO.getSenhaCartao());
         status = status != null ? status : this.validateSaldo(cartao, transacaoDTO.getValor());
 
@@ -36,7 +36,7 @@ public class TransacaoService implements Serializable {
         return cartaoService.updateSaldoCartao(transacaoDTO.getNumeroCartao(), transacaoDTO.getValor());
     }
 
-    private TransacaoStatusEnum validateCartao(Optional<Cartao> cartao, String numeroCartao) {
+    private TransacaoStatusEnum validateNumeroCartao(Optional<Cartao> cartao, String numeroCartao) {
         return cartao.filter(e -> !e.getNumero().equals(numeroCartao))
                 .map(e -> TransacaoStatusEnum.CARTAO_INEXISTENTE)
                 .orElse(null);

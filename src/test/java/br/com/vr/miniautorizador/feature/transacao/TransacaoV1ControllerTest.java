@@ -1,6 +1,7 @@
 package br.com.vr.miniautorizador.feature.transacao;
 
 import br.com.vr.miniautorizador.feature.cartao.CartaoService;
+import br.com.vr.miniautorizador.feature.cartao.dto.CartaoDTO;
 import br.com.vr.miniautorizador.feature.transacao.dto.TransacaoDTO;
 import br.com.vr.miniautorizador.shared.enuns.TransacaoStatusEnum;
 import br.com.vr.miniautorizador.shared.persistence.Cartao;
@@ -17,12 +18,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(TransacaoV1Controller.class)
 public class TransacaoV1ControllerTest {
@@ -120,4 +122,20 @@ public class TransacaoV1ControllerTest {
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string("CARTAO_INEXISTENTE"));
     }
+
+    @Test
+    @DisplayName("Verificar criação da transação com dados nulo")
+    public void shouldBadRequest_createdTransacao() throws Exception {
+        TransacaoDTO dto = TransacaoDTO.builder().valor(new BigDecimal("0.0")).build();
+
+        mock.perform(post("/transacoes")
+                        .content(mapper.writeValueAsString(dto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.numeroCartao", is("Número do cartão é obrigatório")))
+                .andExpect(jsonPath("$.senhaCartao", is("Senha do cartão é obrigatório")))
+                .andExpect(jsonPath("$.valor", is("Valor a ser debitado deve ser maior que zero")));
+    }
+
 }
