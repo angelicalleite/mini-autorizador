@@ -3,6 +3,7 @@ package br.com.vr.miniautorizador.feature.transacao;
 import br.com.vr.miniautorizador.feature.cartao.CartaoService;
 import br.com.vr.miniautorizador.feature.transacao.dto.TransacaoDTO;
 import br.com.vr.miniautorizador.shared.enuns.TransacaoStatusEnum;
+import br.com.vr.miniautorizador.shared.persistence.Cartao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -52,10 +54,10 @@ public class TransacaoV1ControllerTest {
     @DisplayName("Verificar execução transação com sucesso")
     public void shouldReturnOK_savedTransacao() throws Exception {
         lenient().when(transacaoService.validateTransacao(transacaoDTO))
-                .thenReturn(null);
+                .thenReturn(TransacaoStatusEnum.OK);
 
         when(transacaoService.updateSaldoCartao(transacaoDTO))
-                .thenReturn(TransacaoStatusEnum.OK);
+                .thenReturn(new Cartao());
 
         mock.perform(post("/transacoes")
                         .content(mapper.writeValueAsString(transacaoDTO))
@@ -72,7 +74,7 @@ public class TransacaoV1ControllerTest {
                 .thenReturn(TransacaoStatusEnum.SALDO_INSUFICIENTE);
 
         when(transacaoService.updateSaldoCartao(transacaoDTO))
-                .thenReturn(TransacaoStatusEnum.SALDO_INSUFICIENTE);
+                .thenReturn(any());
 
         mock.perform(post("/transacoes")
                         .content(mapper.writeValueAsString(transacaoDTO))
@@ -89,7 +91,7 @@ public class TransacaoV1ControllerTest {
                 .thenReturn(TransacaoStatusEnum.SENHA_INVALIDA);
 
         when(transacaoService.updateSaldoCartao(transacaoDTO))
-                .thenReturn(TransacaoStatusEnum.SENHA_INVALIDA);
+                .thenReturn(any());
 
         mock.perform(post("/transacoes")
                         .content(mapper.writeValueAsString(transacaoDTO))
@@ -109,7 +111,7 @@ public class TransacaoV1ControllerTest {
                 .thenReturn(TransacaoStatusEnum.CARTAO_INEXISTENTE);
 
         when(transacaoService.updateSaldoCartao(transacaoDTO))
-                .thenReturn(TransacaoStatusEnum.CARTAO_INEXISTENTE);
+                .thenReturn(any());
 
         mock.perform(post("/transacoes")
                         .content(mapper.writeValueAsString(transacaoDTO))

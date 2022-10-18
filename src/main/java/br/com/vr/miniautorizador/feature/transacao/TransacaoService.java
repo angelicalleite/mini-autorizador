@@ -27,13 +27,13 @@ public class TransacaoService implements Serializable {
 
         TransacaoStatusEnum status = this.validateCartao(cartao, transacaoDTO.getNumeroCartao());
         status = status != null ? status : this.validateSenha(cartao, transacaoDTO.getSenhaCartao());
+        status = status != null ? status : this.validateSaldo(cartao, transacaoDTO.getValor());
 
-        return status != null ? status : this.validateSaldo(cartao, transacaoDTO.getValor());
+        return status != null ? status : TransacaoStatusEnum.OK;
     }
 
-    public TransacaoStatusEnum updateSaldoCartao(TransacaoDTO transacaoDTO) {
-        Cartao cartao = cartaoService.updateSaldoCartao(transacaoDTO.getNumeroCartao(), transacaoDTO.getValor());
-        return cartao != null ? TransacaoStatusEnum.OK : null;
+    public Cartao updateSaldoCartao(TransacaoDTO transacaoDTO) {
+        return cartaoService.updateSaldoCartao(transacaoDTO.getNumeroCartao(), transacaoDTO.getValor());
     }
 
     private TransacaoStatusEnum validateCartao(Optional<Cartao> cartao, String numeroCartao) {

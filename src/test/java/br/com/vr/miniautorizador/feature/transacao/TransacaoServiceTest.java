@@ -51,7 +51,7 @@ public class TransacaoServiceTest {
 
         TransacaoStatusEnum transacaoStatus = transacaoService.validateTransacao(transacaoDTO);
 
-        assertNull(transacaoStatus);
+        assertEquals(TransacaoStatusEnum.OK, transacaoStatus);
     }
 
     @Test
